@@ -42,10 +42,10 @@ public class Category implements Serializable{
 	
 	@Column(name = "category_merchants")
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-	private final List<Merchant> categoryMerchants;
+	private final List<Merchant> merchantL;
 	
 	public void addMerchant(Merchant merchant) {
-		categoryMerchants.add(merchant);
+		merchantL.add(merchant);
 	}
 }
 

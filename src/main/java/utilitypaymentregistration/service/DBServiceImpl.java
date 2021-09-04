@@ -1,20 +1,32 @@
 package utilitypaymentregistration.service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import utilitypaymentregistration.Repository.CategoryRepository;
 import utilitypaymentregistration.Repository.MerchantRepository;
 import utilitypaymentregistration.Repository.SubscriptionRepository;
-import utilitypaymentregistration.data.EResponse;
 import utilitypaymentregistration.data.Category;
+import utilitypaymentregistration.data.SaveResponse;
+import utilitypaymentregistration.data.SaveResponse.saveResponseStatus;
 import utilitypaymentregistration.data.Subscription;
 
 @Component
-@ComponentScan(basePackages = {"utilitypaymentregistration.Repository"})
+@ComponentScan(basePackages = { "utilitypaymentregistration.Repository" })
 public class DBServiceImpl implements DBService {
 
 	@Autowired
@@ -28,32 +40,48 @@ public class DBServiceImpl implements DBService {
 		category.saveAll(cl);
 	}
 
-	public Iterable<Category> getMerchants()
-	{
-		return category.findAll();
+	public List<Category> getMerchants() {
+		return (List<Category>) category.findAll();
 	}
+
 	public void deleteAllMerchants() {
 		merchant.deleteAll();
 		category.deleteAll();
 	}
 
-	public EResponse saveAllSubsc(Subscription subscResponse) {
+	public SaveResponse saveAllSubsc(Subscription subscRequest) {
 
-		EResponse response = new EResponse();
+		SaveResponse response = new SaveResponse(null, null, null, null, null, 0);
 		// autoIncrement with trigger
-		try {
-		subsc.save(subscResponse);
-		boolean have =subsc.existsById(subscResponse.subscriptionId);
-		if(have)
-		{
-			response.setStatus(EResponse.ResponseStatus.SUCCESS);
+
+		subsc.save(subscRequest);
+		boolean have = subsc.existsById(subscRequest.getSubscriptionId());
+		if (have == true) {
+			response = new SaveResponse("200", "Success", "Успех", "", "Success", 1);
+			response.setStatus(saveResponseStatus.SUCCESS);
+		} else {
+			response.setStatus(saveResponseStatus.G_ERROR);
 		}
-		else {response.setStatus(EResponse.ResponseStatus.G_ERROR);}
-		}
-		catch (Exception e) {
-		response.setStatus(EResponse.ResponseStatus.G_ERROR);
-		}
+
 		return response;
 	}
+
+	public List<Subscription> getSubscriptions() {
+		return subsc.findAll();
+	}
+
+	public Pageable sort()
+	{
+		Pageable sortedByLastUpdate = 
+				  PageRequest.of(0, 20, Sort.by("lastUpdateDate")); 
+		return sortedByLastUpdate;
+	}
+	
+	
+	// Save last data update
+	// sort by date -- 
+	// iterate by date 
+	// consume checkBillAmount --- 
+	// ExseptionHandling if chckBill return error
 
 }

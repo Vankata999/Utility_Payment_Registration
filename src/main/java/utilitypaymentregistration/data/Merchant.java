@@ -9,6 +9,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -43,7 +46,13 @@ public class Merchant implements Serializable{
 	private int listOrder;
 	
 	
+	@JsonProperty("cName")
+	public String getCategoryName()
+	{
+		return category.getCategoryName(); 
+	}
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "category_id")
 	private Category category;

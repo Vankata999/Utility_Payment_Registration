@@ -21,8 +21,8 @@ public class EpayServiceImpl  {
 	@Autowired
 	RestTemplate restTemplate = new RestTemplate();
 	
-	@Value("${bankApi.url}")
-	private String bankApiUrl; //http://localhost:8082/bankApi
+	@Value("${Internship.url}")
+	private String bankApiUrl; 
 
 	@Bean
 	public RestTemplate restTemplate(RestTemplateBuilder builder) {
@@ -34,14 +34,21 @@ public class EpayServiceImpl  {
 	public DivideMerchantCategory getMerchants() {
 		log.info("Get Merchant Data. ");
 
-		DivideMerchantCategory list = restTemplate.getForObject(bankApiUrl + "/getMerchantsData", DivideMerchantCategory.class);
-		return list;
+		return restTemplate.getForObject(bankApiUrl + "/merchant", DivideMerchantCategory.class);
+		
 	}
 
 	public EResponse checkBill(@RequestBody ERequest eRequest) {
 		log.info("Check Bill. ");
-
+		 
 		return restTemplate.postForObject(bankApiUrl + "/checkBill", eRequest, EResponse.class);
+	}
+	
+	public Integer checkBillAmount(@RequestBody ERequest eRequest)
+	{
+		EResponse res =  restTemplate.postForObject(bankApiUrl + "/checkBill", eRequest, EResponse.class);
+		 return res.getAmount();
+		
 	}
 
 	public EResponse checkBillBlocked(@RequestBody ERequest eRequest) {

@@ -1,17 +1,20 @@
 package utilitypaymentregistration.tasks;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
+import utilitypaymentregistration.data.Category;
 import utilitypaymentregistration.service.DBService;
 import utilitypaymentregistration.service.EpayServiceImpl;
 
-@Component
+@Configuration
+@EnableScheduling
 @Slf4j
 public class UPRTask {
 	@Autowired
@@ -20,13 +23,19 @@ public class UPRTask {
 	private DBService db;
 	private static final SimpleDateFormat dataFormat = new SimpleDateFormat("HH:mm:ss");
 
-	@Value( "${task.interval}" )
-	 @Scheduled(fixedDelayString =  "task.interval"      )   
+	@Scheduled(fixedDelayString = "${task.interval}")
 
 	public void loadMerchant() {
 		log.info("Merchant task executed {}", dataFormat);
-        epayService.getMerchants();
-		// форматиране и запаметяване в двете таблици
+		List<Category> listCategory = epayService.getMerchants().asList();
 		
+		if(!listCategory.isEmpty())
+		{
+			db.deleteAllMerchants();
+			db.insertCategoryMerchant(listCategory);
+		}
+		else {
+			return;  
+		}
 	}
 }

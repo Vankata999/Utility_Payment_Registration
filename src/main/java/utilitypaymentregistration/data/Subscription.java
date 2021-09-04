@@ -4,81 +4,82 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.springframework.data.annotation.Id;
 
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-
 @Data
 @RequiredArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PUBLIC,force = true)
-@Entity(name = "subscription")
+@NoArgsConstructor(access = AccessLevel.PUBLIC, force = true)
+@Entity // (name = "subscription")
 @Table(name = "up_subscription")
+public class Subscription implements Serializable {
 
-public class Subscription implements Serializable{
-	
 	private static final long serialVersionUID = 1L;
 	
-	
- 
 	@Id
-	@GeneratedValue(generator = "sequence-generator")
-    @GenericGenerator(
-      name = "sequence-generator",
-      strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-      parameters = {
-        @Parameter(name = "sequence_name", value = "subscription_sequence"),
-        @Parameter(name = "initial_value", value = "0"),
-        @Parameter(name = "increment_size", value = "1")
-        }
-    )
-    @Column(name = "subscription_id")
-    public final Integer subscriptionId;
-	@Column(name = "user_id")
+	@Column(name = "subscriptionId")
+	public Integer subscriptionId;
+	@Column(name = "userId")
 	public final Integer userId;
 	@Column(name = "alias")
 	public final String alias;
-	@Column(name = "merchant_ref_no")
+	@Column(name = "merchantRefNo")
 	public final String merchantRefNo;
-	@Column(name = "merchant_id")
+	@Column(name = "merchantId")
 	public final Integer merchantId;
-	@Column(name = "customer_name")
+	@Column(name = "merchantName")
+	public final String merchantName;
+	@Column(name = "customerName")
 	public final String customerName;
 	@Column(name = "address")
 	public final String address;
-	@Column(name = "short_desc")
+	@Column(name = "shortDesc")
 	public final String short_desc;
-	@Column(name = "payment_method")
+	@Column(name = "paymentMethod")
 	public final String paymentMethod;
-	@Column(name = "payment_account")
+	@Column(name = "paymentAccount")
 	public final String paymentAccount;
-	@Column(name = "automatic_payment")
+	@Column(name = "paymentAccountDesc")
+	public final String paymentAccountDesc;
+	@Column(name = "automaticPayment")
 	public final Boolean automatic_payment;
-	@Column(name = "automatic_max_amount")
-	public final Boolean automatic_max_amount;
-	@Column(name = "automatic_max_days_retry")
-	public final Integer automatic_max_days_retry;
-	@Column(name = "insert_date")
-	public final String insert_date;
-	@Column(name = "last_update_date")
-	public final String last_update_date;
-	@Column(name = "cached_due_amount")
-	public final Integer cached_due_amount;
-	@Column(name = "cached_due_checked_date")
-	public final String cached_due_checked_date;
-	@Column(name = "cached_due_service_response")
-	public final String cached_due_service_response;
-	@Column(name = "cached_due_error_code")
-	public final String cached_due_error_code;
-	@Column(name = "cached_due_error_description")
-	public final String cached_due_error_description;
-	@Column(name = "cached_due_id")
-	public final Integer cached_due_id;
+	@Column(name = "maxAmountAuto")
+	public final Boolean maxAmountAuto;
+	@Column(name = "retryDays")
+	public final Integer retryDays;
+	@Column(name = "insertDate")
+	public String insertDate;
+	@Column(name = "lastUpdateDate")
+	public String lastUpdateDate;
+	@Column(name = "cachedDueAmount")
+	public final Integer cachedDueAmount;
+	@Column(name = "cachedDueCheckedDate")
+	public String cachedDueCheckedDate;
+	@Column(name = "cachedDueServiceResponse") 
+	public final String cachedDueServiceResponse;
+	@Column(name = "cachedDueErrorCode")
+	public final String cachedDueErrorCode;
+	@Column(name = "cachedDueErrorDescription")
+	public final String cachedDueErrorDescription;
+	@Column(name = "cachedDueId")
+	public final Integer cachedDueId;
+	// а ако checkBill върне че е валидно с дата по стара от това което е като ласт ъпдейт? трябва ли да е сървар ерор или е валидно и вземаме сумата
+	
+	
+	
+
+	public void getLasttUpdate() {
+		lastUpdateDate = getCachedDueCheckedDate();
+	}
+
+	
+
+	public void setId(int i) {
+		
+		subscriptionId = getSubscriptionId() + i;
+	}
 }
