@@ -44,12 +44,7 @@ public class EpayServiceImpl  {
 		return restTemplate.postForObject(bankApiUrl + "/checkBill", eRequest, EResponse.class);
 	}
 	
-	public Integer checkBillAmount(@RequestBody ERequest eRequest)
-	{
-		EResponse res =  restTemplate.postForObject(bankApiUrl + "/checkBill", eRequest, EResponse.class);
-		 return res.getAmount();
-		
-	}
+	
 
 	public EResponse checkBillBlocked(@RequestBody ERequest eRequest) {
 		log.info("Check Bill Blocked. ");
@@ -67,6 +62,11 @@ public class EpayServiceImpl  {
 		log.info("Reverse Bill. ");
 		
 		return restTemplate.postForObject(bankApiUrl + "/reverseBill", eRequest, EResponse.class);
+	}
+
+	public Integer getAmount(ERequest request) {
+		EResponse res =  restTemplate.postForObject(bankApiUrl + "/checkBill", request, EResponse.class);
+		 return res.getAmount();
 	}
 
 }

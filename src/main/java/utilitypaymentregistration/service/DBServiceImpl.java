@@ -1,17 +1,11 @@
 package utilitypaymentregistration.service;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -24,6 +18,7 @@ import utilitypaymentregistration.data.Category;
 import utilitypaymentregistration.data.SaveResponse;
 import utilitypaymentregistration.data.SaveResponse.saveResponseStatus;
 import utilitypaymentregistration.data.Subscription;
+
 
 @Component
 @ComponentScan(basePackages = { "utilitypaymentregistration.Repository" })
@@ -52,11 +47,11 @@ public class DBServiceImpl implements DBService {
 	public SaveResponse saveAllSubsc(Subscription subscRequest) {
 
 		SaveResponse response = new SaveResponse(null, null, null, null, null, 0);
-		// autoIncrement with trigger
+		// autoIncrement with trigger --ready
 
 		subsc.save(subscRequest);
 		boolean have = subsc.existsById(subscRequest.getSubscriptionId());
-		if (have == true) {
+		if (have == false) {
 			response = new SaveResponse("200", "Success", "Успех", "", "Success", 1);
 			response.setStatus(saveResponseStatus.SUCCESS);
 		} else {
@@ -70,18 +65,31 @@ public class DBServiceImpl implements DBService {
 		return subsc.findAll();
 	}
 
-	public Pageable sort()
+	public Pageable sortTable()
 	{
-		Pageable sortedByLastUpdate = 
-				  PageRequest.of(0, 20, Sort.by("lastUpdateDate")); 
-		return sortedByLastUpdate;
+		Pageable sortedBycachedDueCheckedDate = 
+				  PageRequest.of(0, 20, Sort.by("cachedDueCheckedDate")); 
+		return sortedBycachedDueCheckedDate;
 	}
 	
+	//iterate throw table
+	public void iteration(HttpServletRequest req)
+	{
+		String[] values = req.getParameterValues("subscriptionId");
+		for(int i=0;i<values.length;i++)
+	    {
 	
-	// Save last data update
+	    }
+
+	}
+	
+
+	
+	//save to the row of number i
+	// Save last data update ---
 	// sort by date -- 
-	// iterate by date 
+	// iterate --
 	// consume checkBillAmount --- 
-	// ExseptionHandling if chckBill return error
+	// ExseptionHandling if chckBill return error -- if error -> we call the same function(recursion)
 
 }

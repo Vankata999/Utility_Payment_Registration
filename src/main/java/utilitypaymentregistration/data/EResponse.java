@@ -3,7 +3,10 @@ package utilitypaymentregistration.data;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.springframework.lang.NonNull;
 
@@ -16,10 +19,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+
+
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC, force = true)
-
+@XmlRootElement(name = "e_response")
+@XmlAccessorType(XmlAccessType.FIELD)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class EResponse implements Serializable {
 
@@ -35,23 +41,23 @@ public class EResponse implements Serializable {
 	private final Integer total;
 
 	@JsonFormat(pattern = "yyyyMMdd")
-	
+	@XmlElement(name = "valid_to")
 	private final LocalDate validto;
 
-
+	@XmlElement(name = "short_desc")
 	private final String shortDesc;
 
-	
+	@XmlElement(name = "long_desc")
 	private final String longDesc;
 
-
+	@XmlElement(name = "second_Id")
 	private final String secondId;
 
-	
+	@XmlElement(name = "error_code")
 	@Setter
 	private  String errorCode  ;
 
-	
+	@XmlElement(name = "error_des")
 	@Setter
 	private  String errorDes ;
 

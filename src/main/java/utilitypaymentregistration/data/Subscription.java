@@ -1,10 +1,16 @@
 package utilitypaymentregistration.data;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import lombok.AccessLevel;
@@ -22,6 +28,8 @@ public class Subscription implements Serializable {
 	
 	@Id
 	@Column(name = "subscriptionId")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subscription_generator")
+	@SequenceGenerator(name="client_seq", sequenceName = "client_seq")
 	public Integer subscriptionId;
 	@Column(name = "userId")
 	public final Integer userId;
@@ -52,34 +60,31 @@ public class Subscription implements Serializable {
 	@Column(name = "retryDays")
 	public final Integer retryDays;
 	@Column(name = "insertDate")
-	public String insertDate;
+	public final String insertDate;
 	@Column(name = "lastUpdateDate")
 	public String lastUpdateDate;
 	@Column(name = "cachedDueAmount")
-	public final Integer cachedDueAmount;
+	public  Integer cachedDueAmount;
 	@Column(name = "cachedDueCheckedDate")
 	public String cachedDueCheckedDate;
 	@Column(name = "cachedDueServiceResponse") 
-	public final String cachedDueServiceResponse;
+	public  String cachedDueServiceResponse;
 	@Column(name = "cachedDueErrorCode")
-	public final String cachedDueErrorCode;
+	public  String cachedDueErrorCode;
 	@Column(name = "cachedDueErrorDescription")
-	public final String cachedDueErrorDescription;
+	public  String cachedDueErrorDescription;
 	@Column(name = "cachedDueId")
 	public final Integer cachedDueId;
-	// а ако checkBill върне че е валидно с дата по стара от това което е като ласт ъпдейт? трябва ли да е сървар ерор или е валидно и вземаме сумата
 	
 	
 	
 
-	public void getLasttUpdate() {
-		lastUpdateDate = getCachedDueCheckedDate();
+	public String cachedDueCheckedDate()
+	{
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+		   LocalDateTime now = LocalDateTime.now();  
+		  return dtf.format(now);
 	}
 
 	
-
-	public void setId(int i) {
-		
-		subscriptionId = getSubscriptionId() + i;
-	}
 }

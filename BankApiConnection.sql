@@ -3,22 +3,18 @@ SELECT
     
     
     
-    CREATE SEQUENCE client_seq
+CREATE SEQUENCE client_seq
  START WITH     1
  INCREMENT BY   1
- MINVALUE 1
- MAXVALUE 999999999999999999999999999;
+ NOCACHE
+ NOCYCLE;
  
-    
-    CREATE OR REPLACE TRIGGER clients_on_insert
-  BEFORE UPDATE ON HR.up_subscription
+ 
+CREATE OR REPLACE TRIGGER clients_on_insert
+  BEFORE INSERT ON HR.up_subscription
   FOR EACH ROW
 BEGIN
-  if :new.subscription_id is null then
-     SELECT client_seq.nextval
-    INTO :new.subscription_id
-    FROM dual;
-  END IF;
+:new.subscription_id:=client_seq.nextval; 
 END;
 
 

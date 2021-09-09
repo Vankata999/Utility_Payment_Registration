@@ -31,11 +31,11 @@ public class Category implements Serializable{
 	@Column(name = "category_name")
 	private final String categoryName;
 	
-//	@Column(name = "category_type")
-//	private final String categoryType;
-//	
-//	@Column(name = "category_desc")
-//	private final String categoryDesc;
+	@Column(name = "category_type")
+	private final String categoryType;
+	
+	@Column(name = "category_desc")
+	private final String categoryDesc;
 	
 	@Column(name = "list_order")
 	private final Integer listOrder;

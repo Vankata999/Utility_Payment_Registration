@@ -28,6 +28,11 @@ public class UPRController {
 		return  service.checkBill(request);
 	}
 	
+	@PostMapping(value = "/getAmount")
+	public Integer getAmount(@RequestBody ERequest request) {
+		return  ((EpayServiceImpl) service).getAmount(request);
+	}
+	
 	@PostMapping(value = "/saveSubscr")
 	public SaveResponse save(@RequestBody Subscription subsc) {
 		return dbs.saveAllSubsc(subsc);

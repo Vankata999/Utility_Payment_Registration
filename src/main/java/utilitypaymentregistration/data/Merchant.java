@@ -46,7 +46,7 @@ public class Merchant implements Serializable{
 	private int listOrder;
 	
 	
-	@JsonProperty("cName")
+	@JsonProperty("category_name")
 	public String getCategoryName()
 	{
 		return category.getCategoryName(); 
@@ -54,7 +54,7 @@ public class Merchant implements Serializable{
 	
 	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name = "category_id")
+	@JoinColumn(name = "categoryy_id")
 	private Category category;
 	
 }

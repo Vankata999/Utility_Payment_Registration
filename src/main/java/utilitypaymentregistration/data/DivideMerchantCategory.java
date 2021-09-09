@@ -19,7 +19,7 @@ public class DivideMerchantCategory {
 		for (Merchant merchant : merchantList) {
 			if (!hashMap.containsKey(merchant.getCategoryId())) {
 				Category category = new Category(merchant.getCategoryId(), 
-												 merchant.getCategoryName(), 
+												 merchant.getCategoryName(),null,null, 
 												 categoryListOrder,
 												 new ArrayList<Merchant>());
 				categoryListOrder++;
