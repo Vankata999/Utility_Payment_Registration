@@ -3,7 +3,6 @@ package utilitypaymentregistration.data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +16,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC, force = true)
@@ -25,11 +25,11 @@ import lombok.RequiredArgsConstructor;
 public class Subscription implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@Column(name = "subscriptionId")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subscription_generator")
-	@SequenceGenerator(name="client_seq", sequenceName = "client_seq")
+	@SequenceGenerator(name = "client_seq", sequenceName = "client_seq", allocationSize = 0)
 	public Integer subscriptionId;
 	@Column(name = "userId")
 	public final Integer userId;
@@ -64,27 +64,24 @@ public class Subscription implements Serializable {
 	@Column(name = "lastUpdateDate")
 	public String lastUpdateDate;
 	@Column(name = "cachedDueAmount")
-	public  Integer cachedDueAmount;
+	public Integer cachedDueAmount;
 	@Column(name = "cachedDueCheckedDate")
 	public String cachedDueCheckedDate;
-	@Column(name = "cachedDueServiceResponse") 
-	public  String cachedDueServiceResponse;
+	@Column(name = "cachedDueServiceResponse")
+	public String cachedDueServiceResponse;
 	@Column(name = "cachedDueErrorCode")
-	public  String cachedDueErrorCode;
+	public String cachedDueErrorCode;
 	@Column(name = "cachedDueErrorDescription")
-	public  String cachedDueErrorDescription;
+	public String cachedDueErrorDescription;
 	@Column(name = "cachedDueId")
 	public final Integer cachedDueId;
-	
-	
-	
 
-	public String cachedDueCheckedDate()
-	{
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
-		   LocalDateTime now = LocalDateTime.now();  
-		  return dtf.format(now);
+
+
+	public String cachedDueCheckedDate() {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+		LocalDateTime now = LocalDateTime.now();
+		return dtf.format(now);
 	}
 
-	
 }

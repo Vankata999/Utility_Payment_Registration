@@ -23,7 +23,7 @@ public class UPRTask {
 	private DBService db;
 	private static final SimpleDateFormat dataFormat = new SimpleDateFormat("HH:mm:ss");
 
-	@Scheduled(fixedDelayString = "${task.interval}")
+//	@Scheduled(fixedDelayString = "${task.interval}")
 
 	public void loadMerchant() {
 		log.info("Merchant task executed {}", dataFormat);

@@ -10,7 +10,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -46,11 +45,11 @@ public class Merchant implements Serializable{
 	private int listOrder;
 	
 	
-	@JsonProperty("category_name")
+	/*@JsonProperty("category_name")
 	public String getCategoryName()
 	{
 		return category.getCategoryName(); 
-	}
+	}*/
 	
 	@JsonIgnore
 	@ManyToOne

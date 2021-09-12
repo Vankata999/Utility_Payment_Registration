@@ -1,6 +1,5 @@
 package utilitypaymentregistration.tasks;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,35 +30,38 @@ public class PendingDuesTask {
 	DBServiceImpl dbs;
 	@Autowired
 	EpayServiceImpl esi;
-	
-	//@Scheduled(fixedDelay = 2000)
+
+	@Scheduled(fixedDelay = 200000)
 	public void loadingPendingDues() {
 		ERequest request = new ERequest();
-		List<Subscription> s = rep.findAll();
+		List<Subscription> s = (List<Subscription>) dbs.sortTable();
 
-		dbs.sortTable();
-	//	String[] values = req.getParameterValues("subscriptionId");
+		dbs.sortTable().next();
 
-		for(int i = 0;i<s.size();++i) {
-			if (esi.checkBill(request).getStatus() == ResponseStatus.SUCCESS) {
-				s.get(i);
-				Subscription subscription = new Subscription();
-				
-				subscription.setCachedDueAmount(esi.checkBill(request).getAmount());
-				subscription.setCachedDueCheckedDate(subscription.cachedDueCheckedDate());
-				subscription.setCachedDueServiceResponse("Success");
-				rep.save(subscription);
-				//set date and get amount,set service response
-			} else {
-				s.get(i);
-				Subscription subscription = new Subscription();
-				subscription.setCachedDueCheckedDate(subscription.cachedDueCheckedDate());
-				subscription.setCachedDueServiceResponse("Error");
-				subscription.setCachedDueErrorCode(esi.checkBill(request).getErrorCode());;
-				subscription.setCachedDueErrorDescription(esi.checkBill(request).getErrorDes());;
-				rep.save(subscription);
-				//set date,status code,status description,service response
+		if (s.isEmpty() == true) {
+			return;
+		}
+
+		for (Subscription subs : s) {
+			EResponse resp = null;
+			subs.setCachedDueCheckedDate(subs.cachedDueCheckedDate());
+			try {
+				resp = esi.checkBill(request);
+
+				if (resp.getStatus() == ResponseStatus.SUCCESS) {
+					subs.setCachedDueAmount(resp.getAmount());
+					subs.setCachedDueServiceResponse("Success");
+				} else {
+					subs.setCachedDueServiceResponse("Error");
+					subs.setCachedDueErrorCode(resp.getErrorCode());
+					;
+					subs.setCachedDueErrorDescription(resp.getErrorDes());
+					;
+				}
+			} catch (RuntimeException ex) {
+
 			}
+			rep.save(subs);
 		}
 	}
 }

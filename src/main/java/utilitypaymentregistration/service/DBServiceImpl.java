@@ -83,13 +83,13 @@ public class DBServiceImpl implements DBService {
 
 	}
 	
-
+	
 	
 	//save to the row of number i
 	// Save last data update ---
 	// sort by date -- 
 	// iterate --
-	// consume checkBillAmount --- 
-	// ExseptionHandling if chckBill return error -- if error -> we call the same function(recursion)
+	
+	
 
 }
